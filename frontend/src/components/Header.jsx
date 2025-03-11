@@ -6,6 +6,7 @@ import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
+import SearchBox from './SearchBox';
 import logo from '../assets/logo.png';
 
 const Header = () => {
@@ -38,6 +39,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
+              <SearchBox />
               <Nav.Link as={Link} to="/cart">
                 <FaShoppingCart /> Cart
                 {cartItems.length > 0 && (
@@ -49,7 +51,9 @@ const Header = () => {
 
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="username">
-                  <NavDropdown.Item>Profile</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/profile">
+                    Profile
+                  </NavDropdown.Item>
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout
                   </NavDropdown.Item>
@@ -58,6 +62,19 @@ const Header = () => {
                 <Nav.Link as={Link} to="/login">
                   <FaUser /> Sign In
                 </Nav.Link>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title="Admin" id="adminmenu">
+                  <NavDropdown.Item as={Link} to="/admin/productlist">
+                    Products
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/admin/orderlist">
+                    Orders
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/admin/userlist">
+                    Users
+                  </NavDropdown.Item>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
